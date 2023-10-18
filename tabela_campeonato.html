@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela dos times</title>
+    <style>
+        body{
+            text-align: center;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            height: 100vh;
+            background-color: grey;
+        }
+
+        #start{
+            padding: 5px;
+            background-color: beige;
+            border: 1px solid black;
+            border-radius: 10px;
+            box-shadow: 2px 2px 25px 5px white;
+        }
+
+
+        th, td{
+            border: 1px solid black;
+            text-align: left;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="start">
+        <button id="botao" onclick="criaTabela()">Clique aqui</button>
+    </div>
+    <script>
+        function getTimes()
+        {
+            var lista = ["Botafogo", "Palmeiras", "Flamengo", "Fluminense", "Grêmio", "Athlético-PR", "Bragantino", "Fortaleza", "Cuiabá", "São Paulo", "Atlético-MG", "Cruzeiro", "Corinthians", "Internacional", "Goiás", "Bahia", "Santos", "Vasco da Gama", "Coritiba", "América-MG"];
+            return lista;
+        }
+        
+        function getPontos()
+        {
+            var lista = [48, 37, 35, 34, 33, 32, 32, 29, 28, 28, 27, 25, 24, 24, 23, 21, 21, 16, 14, 10];
+            return lista;
+        }
+
+
+        function criaTabela()
+        {
+            console.log("Início da função de criar tabela");
+            //table
+            let table = document.createElement("table");
+            let div = document.querySelector("#start");
+            div.appendChild(table);
+            //thead
+            let thead = document.createElement("thead");
+            table.appendChild(thead);
+            //tr
+            let tr = document.createElement("tr");
+            thead.appendChild(tr);
+            //th
+            let th = document.createElement("th");
+            tr.appendChild(th);
+            th.innerText = "Times";
+            let th2 = document.createElement("th");
+            tr.appendChild(th2);
+            th2.innerText = "Pontuação";
+            //Linhas e colunas
+            table = document.querySelector("table");
+            let row;
+            let celula1;
+            let celula2;
+            let i;
+            var times = [];
+            var pontos = [];
+            pontos = getPontos();
+            times = getTimes();
+            for (i=0;i<20;i++)
+            {
+                row = table.insertRow();
+                celula1 = row.insertCell();
+                celula2 = row.insertCell();
+                celula1.innerText = times[i];
+                celula2.innerText = pontos[i];
+            }
+            table.id = "tabela";
+        }
+    </script>
+</body>
+</html>

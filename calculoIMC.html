@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de IMC</title>
+</head>
+<style>
+    html
+    {
+        width: 100%;
+        height: 100%;
+    }
+    body
+    {
+        background-color: #8ce2ae;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 99%;
+        height: 97%;
+    }
+    #box
+    {
+        background-color: #449485;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        box-shadow: 5px 5px 10px 2px #214a42;
+    }
+    .button
+    {
+        margin-top: 20px;
+        border-radius: 5px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+    input
+    {
+        border-radius: 5px;
+        box-shadow: 1px 1px 2px 0.4px black;
+    }
+    table
+    {
+        display: none;
+        margin: 20px;
+        border: 1px solid black;
+    }
+    td
+    {
+        border: 1px solid black;
+        padding: 3px;
+    }
+</style>
+<body>
+    <div id="box">
+        <header>
+            <h1>Cálculo de IMC</h1>
+        </header>
+        <p>Digite seu nome: </p>
+        <input type="text" name="nome" id="nome" class="input">
+        <p>Digite seu peso (em kg): </p>
+        <input type="number" name="peso" id="peso" class="input">
+        <p>Digite sua altura (em centímetros): </p>
+        <input type="number" name="altura" id="altura" class="input">
+        <button id="botao" class="button" onclick="calcularimc()">Enviar</button>
+        <table>
+        </table>
+        <button id="medias" onclick="medias()" class="button">Calcular médias</button>
+    </div>
+    <script>
+        var listaIMC = [];
+        function calcularimc()
+        {
+            const formatador = new Intl.NumberFormat(('pt-BR'), {maximumFractionDigits: 2});
+            let nome = document.querySelector("#nome").value;
+            let peso = document.querySelector("#peso").value;
+            let altura = document.querySelector("#altura").value / 100;
+            let imc = peso / (altura * altura);
+            let todasCelulas = document.querySelectorAll("td");
+            let achou = false;
+            for (i=0;i<todasCelulas.length;i++)
+            {
+                if (todasCelulas[i].innerText === nome)
+                {
+                    todasCelulas[i+1].innerText = formatador.format(imc);
+                    achou = true
+                    if (imc < 16.5 || imc > 27)
+                    {
+                        todasCelulas[i].style.backgroundColor = "red";
+                        todasCelulas[i+1].style.backgroundColor = "red";
+                    }
+                    else if (imc > 16.5 && imc < 18.5 || imc > 25 && imc < 27)
+                    {
+                        todasCelulas[i].style.backgroundColor = "yellow";
+                        todasCelulas[i+1].style.backgroundColor = "yellow";
+                    }
+                    else
+                    {
+                        todasCelulas[i].style.backgroundColor = "green";
+                        todasCelulas[i+1].style.backgroundColor = "green";
+                    }
+                    alert("Lucas já estava cadastrado, então seu IMC foi alterado!");
+                    listaIMC[i] = parseFloat(imc); 
+                }
+            }
+
+            if (achou === false)
+            {
+                //inserindo na tabela
+                if (nome != "" && peso != "" && altura != "")
+                {
+                    let table = document.querySelector("table");
+                    table.style.display = "contents";
+                    let row = table.insertRow();
+                    let celula1 = row.insertCell();
+                    let celula2 = row.insertCell();
+                    celula1.innerText = nome;
+                    celula2.innerText = formatador.format(imc);
+                    listaIMC.push(parseFloat(imc));
+                    if (imc < 16.5 || imc > 27)
+                    {
+                        row.style.backgroundColor = "red";
+                    }
+                    else if (imc > 16.5 && imc < 18.5)
+                    {
+                        row.style.backgroundColor = "yellow";
+                    }
+                    else if (imc > 25 && imc < 27)
+                    {
+                        row.style.backgroundColor = "yellow";
+                    }
+                    else
+                    {
+                        row.style.backgroundColor = "green";
+                    }
+                    nome = document.querySelector("#nome");
+                    peso = document.querySelector("#peso");
+                    altura = document.querySelector("#altura");
+                    nome.value = "";
+                    peso.value = "";
+                    altura.value = "";
+                }
+                else
+                {
+                    alert("Digite em todos os campos para que o cálculo funcione corretamente");
+                }
+            }
+        }
+
+        
+        function medias()
+        {
+            const formatador = new Intl.NumberFormat(('pt-BR'), {maximumFractionDigits: 2});
+            var soma = 0;
+            var mediana = 0;
+            var media = 0;
+            var variancia = 0;
+
+            //media 
+
+            for (let i=0;i<listaIMC.length;i++)
+            {
+                soma += listaIMC[i];
+            }
+            media = soma / listaIMC.length;
+
+            //mediana
+
+            listaIMC.sort();
+            if (listaIMC.length % 2 != 0)
+            {
+                mediana = listaIMC[(listaIMC.length/2) - 0.5];
+            }
+            else
+            {
+                let metade = listaIMC.length/2;
+                mediana = (listaIMC[metade] + listaIMC[metade-1]) / 2
+            }
+
+            //variância
+            for (let i=0;i<listaIMC.length;i++) 
+            {
+                variancia += (media - listaIMC[i]) * (media - listaIMC[i]);
+            }
+            variancia = variancia/listaIMC.length;
+            alert(`A média de IMCs é = ${formatador.format(media)}\nA mediana dos IMCs é = ${formatador.format(mediana)}\nA variância dos IMCs é = ${formatador.format(variancia)}`);
+        }
+    </script>
+</body>
+</html>

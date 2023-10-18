@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Fatorial</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+<body>
+    <div>
+        <button id="botao">iniciar</button>
+        <p id="resultado">R: </p>
+    </div>
+    <script>
+        function criaLista(numero)
+        {
+            var i, j = 1;
+            var lista = [];
+            for (i=0;i<numero;i++)
+            {
+                lista[i] = j;
+                j++;
+            }
+            return lista;
+        }
+
+        function trataClique(a)
+        {
+            var resultado = parseInt(prompt("Digite um número: "));
+            console.log(resultado);
+            /* Verificação da lista
+            for (i=0;i<lista.length;i++)
+            {   
+                console.log(lista[i]);
+            }
+            */
+            var lista = criaLista(resultado);
+            var fatorial = lista.reduce((acumulador, numero) => 
+            {
+                acumulador *= numero;
+                return acumulador;
+            })
+            console.log(fatorial);
+            var resposta = fatorial;
+            var trocar = document.querySelector("#resultado");
+            trocar.innerHTML = "R: " + resposta;
+        }
+
+        var botao = document.querySelector("#botao");
+        var resposta = botao.addEventListener("click", trataClique);
+    </script> 
+</body>
+</html>
